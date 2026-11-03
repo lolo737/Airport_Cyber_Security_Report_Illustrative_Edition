@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Airport Cyber Security Report: Illustrative Edition</title>
+<meta name="description" content="An illustrative cyber security report on Athens International Airport: transit Wi-Fi, VPNs, NAT, workers' security and keeping passenger traffic away from ATC.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --coral:#E9503A; --navy:#232759; --lav:#E7E3F8; --cream:#F2F1DD; --peach:#F3E2D6; --pink:#F3DCE0;
+  --ink:#232759; --muted:#5a5d86; --card:#ffffff;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Poppins',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-weight:400;line-height:1.7;font-size:16px;-webkit-text-size-adjust:100%}
+a{color:var(--coral);text-underline-offset:3px}
+a:hover{color:var(--navy)}
+img{max-width:100%;height:auto;display:block}
+.wrap{max-width:980px;margin:0 auto;padding:0 20px}
+
+/* top bar */
+.bar{position:sticky;top:0;z-index:20;background:var(--navy);color:var(--cream)}
+.bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:52px}
+.bar b{font-weight:600;font-size:.85rem;letter-spacing:.04em;text-transform:uppercase}
+.bar a{color:var(--cream);font-size:.85rem;text-decoration:none;border:1.5px solid var(--coral);border-radius:999px;padding:4px 14px;white-space:nowrap}
+.bar a:hover{background:var(--coral);color:#fff}
+
+/* cover */
+.cover{background:var(--navy);color:var(--cream);padding:56px 0 72px;position:relative;overflow:hidden}
+.cover:after{content:"";position:absolute;right:-120px;bottom:-120px;width:360px;height:360px;border-radius:50%;background:var(--coral);opacity:.9}
+.cover .wrap{position:relative;z-index:1;display:grid;grid-template-columns:1.3fr 1fr;gap:32px;align-items:center}
+.eyebrow{font-size:.78rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--coral);margin:0 0 10px}
+.cover h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.1;font-weight:700;margin:0 0 14px;color:#fff}
+.cover h1 span{color:var(--coral)}
+.cover p.sub{font-size:1.05rem;font-weight:300;margin:0 0 22px;max-width:34ch}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--lav);color:var(--navy);border-radius:999px;padding:4px 14px;font-size:.8rem;font-weight:500}
+.cover .badge{justify-self:center;width:min(100%,340px)}
+.stamp{display:inline-block;margin-top:22px;border:2px solid var(--coral);color:var(--coral);padding:4px 14px;font-weight:700;letter-spacing:.14em;font-size:.78rem;transform:rotate(-3deg);border-radius:4px}
+
+/* toc */
+.toc{background:var(--lav);padding:36px 0}
+.toc h2{margin:0 0 16px;font-size:1.3rem}
+.toc ol{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px 24px;counter-reset:t}
+.toc li{counter-increment:t}
+.toc a{display:flex;gap:10px;align-items:baseline;color:var(--navy);text-decoration:none;font-weight:500;font-size:.92rem;padding:6px 0;border-bottom:1px dashed rgba(35,39,89,.25)}
+.toc a:before{content:counter(t,decimal-leading-zero);color:var(--coral);font-weight:700;font-size:.8rem}
+.toc a:hover{color:var(--coral)}
+
+/* sections */
+section.s{padding:56px 0 8px;scroll-margin-top:56px}
+section.s h2{font-size:clamp(1.5rem,3.4vw,2.1rem);line-height:1.2;margin:0 0 6px;font-weight:700}
+section.s h2 .n{display:block;font-size:.78rem;letter-spacing:.18em;color:var(--coral);font-weight:600;margin-bottom:6px}
+section.s h2:after{content:"";display:block;width:64px;height:5px;background:var(--coral);border-radius:3px;margin-top:12px}
+h3{font-size:1.1rem;margin:30px 0 6px;font-weight:600}
+p{margin:0 0 14px}
+ul.tick{list-style:none;padding:0;margin:0 0 16px}
+ul.tick li{position:relative;padding-left:26px;margin-bottom:8px}
+ul.tick li:before{content:"";position:absolute;left:2px;top:.62em;width:10px;height:10px;border-radius:50%;background:var(--coral)}
+.fig{margin:22px 0;border-radius:16px;overflow:hidden;background:#fff;box-shadow:0 2px 0 rgba(35,39,89,.08)}
+.fig figcaption{font-size:.8rem;color:var(--muted);padding:8px 16px 12px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{background:var(--card);border-radius:16px;padding:20px 22px}
+.card h3{margin-top:0}
+
+/* risk profile */
+.risk{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0}
+.risk div{background:var(--lav);border-radius:14px;padding:14px 16px}
+.risk small{display:block;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--coral)}
+.risk b{font-size:1rem;font-weight:600}
+
+/* notes */
+.note{background:#fff;border-left:6px solid var(--coral);border-radius:0 14px 14px 0;padding:16px 20px;margin:20px 0}
+.note h4{margin:0 0 6px;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--coral);font-weight:700}
+.note p:last-child{margin-bottom:0}
+.note.peach{background:var(--peach)} .note.pink{background:var(--pink)}
+.call{background:var(--navy);color:var(--cream);border-radius:18px;padding:26px 28px;margin:28px 0;font-size:1.15rem;font-weight:500;line-height:1.5}
+.call:before{content:"\201C";display:block;color:var(--coral);font-size:3rem;line-height:.6;font-weight:700}
+
+/* tables */
+.tw{overflow-x:auto;margin:18px 0;border-radius:14px;background:#fff}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:.9rem}
+th{background:var(--navy);color:var(--cream);text-align:left;padding:10px 14px;font-weight:600;font-size:.8rem;letter-spacing:.05em;text-transform:uppercase}
+td{padding:10px 14px;border-top:1px solid #ebe8f6;vertical-align:top}
+tr:nth-child(even) td{background:#faf9ff}
+.pill{display:inline-block;border-radius:999px;padding:1px 10px;font-size:.78rem;font-weight:600;white-space:nowrap}
+.p-low{background:#dff0e3;color:#1f5a33}.p-med{background:#fbefc8;color:#6b5100}.p-high{background:#fbd9d3;color:#8a2a1a}.p-sev{background:var(--coral);color:#fff}
+
+dl.gl{margin:0}
+dl.gl dt{font-weight:700;color:var(--coral);margin-top:14px}
+dl.gl dd{margin:0}
+
+footer{margin-top:64px;background:var(--navy);color:var(--cream);padding:36px 0 44px;font-size:.88rem}
+footer a{color:var(--cream)}
+.sm{font-size:.8rem;color:var(--muted)}
+
+@media(max-width:760px){
+  .cover .wrap{grid-template-columns:1fr}
+  .cover .badge{order:-1;width:min(60%,260px)}
+  .grid2,.risk{grid-template-columns:1fr}
+  .bar b{font-size:.72rem}
+  .cover:after{width:220px;height:220px;right:-90px;bottom:-90px}
+}
+@media print{.bar{display:none}body{background:#fff}section.s{break-inside:avoid-page}}
+</style>
+</head>
+<body>
+
+<div class="bar"><div class="wrap"><b>Illustrative edition &middot; not an audit</b><a href="ATH-Cyber-Security-Report.pdf">Download the PDF</a></div></div>
+
+<header class="cover">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">Cyber security report</p>
+      <h1>Athens International Airport <span>(ATH)</span></h1>
+      <p class="sub">Transit Wi-Fi, VPNs, NAT, workers' security, and keeping passenger traffic away from air traffic control.</p>
+      <div class="chips"><span class="chip">Landside networks</span><span class="chip">Remote access</span><span class="chip">Segmentation</span><span class="chip">State-linked threats</span></div>
+      <span class="stamp">ILLUSTRATIVE COPY</span>
+    </div>
+    <img class="badge" src="assets/eye-badge.png" alt="Engraving of an eye inside a radiating triangle, in a coral ring" width="340" height="340">
+  </div>
+</header>
+
+<nav class="toc" aria-label="Contents">
+  <div class="wrap">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#exec">Executive summary</a></li>
+      <li><a href="#landside">Landside &amp; passenger networks</a></li>
+      <li><a href="#wifi">Public &amp; transit Wi-Fi</a></li>
+      <li><a href="#vpn">VPN &amp; remote access</a></li>
+      <li><a href="#nat">NAT &amp; perimeter hygiene</a></li>
+      <li><a href="#seg">Network segmentation</a></li>
+      <li><a href="#gov">Regulatory &amp; governance</a></li>
+      <li><a href="#sov">Platform &amp; data sovereignty</a></li>
+      <li><a href="#threat">Threat landscape</a></li>
+      <li><a href="#social">Physical &amp; social engineering</a></li>
+      <li><a href="#ir">Incident response &amp; continuity</a></li>
+      <li><a href="#recs">Recommendations summary</a></li>
+      <li><a href="#matrix">Risk overview matrix</a></li>
+      <li><a href="#gloss">Glossary</a></li>
+      <li><a href="#doc">Document control</a></li>
+    </ol>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section class="s" id="exec">
+  <h2><span class="n">01</span>Executive summary</h2>
+  <h3>About this report</h3>
+  <p>This is an illustrative, reference-style briefing on how the networks around a large European airport hang together, where they tend to break, and what good hygiene looks like. Athens International Airport is used as the worked example because it is a typical modern hub: public Wi-Fi, bus and rail links, thousands of airport workers, and operational systems that must never be reachable from any of it.</p>
+  <div class="note"><h4>Scope note</h4>
+    <p>This is not an audit of Athens International Airport and uses no confidential information. Everything here is built from public reporting, published standards and general network practice. Documented incidents are real and are labelled as such; they are drawn from other airports and sectors, and the <a href="#threat">threat landscape</a> section says which. Nothing in this report claims ATH has suffered any of them.</p>
+  </div>
+  <h3>Why landside networks deserve attention</h3>
+  <p>Landside is where the public is: terminal Wi-Fi, charging points, retail tills, bus and rail connections, car parks. It is also where attackers have the easiest access. They do not need to defeat airport security to sit in a cafe and set up a fake hotspot. The question is never whether landside will be probed. It is whether anything important can be reached from there.</p>
+  <div class="call">The goal of good airport network hygiene isn't a perfect fortress. It's making sure a compromised passenger laptop and a compromised runway light are never on speaking terms.</div>
+</section>
+
+<section class="s" id="landside">
+  <h2><span class="n">02</span>Landside &amp; passenger network overview</h2>
+  <p>An airport is several networks wearing one logo. A useful way to read it is by trust level, from the least trusted (anyone with a phone) to the most (systems that move aircraft).</p>
+  <ul class="tick">
+    <li><b>Public zone:</b> passenger Wi-Fi, kiosks, charging points, transit-stop hotspots. Assume hostile.</li>
+    <li><b>Commercial zone:</b> retail tills, car-park payment, advertising screens. Handles card data, so it carries compliance duties of its own.</li>
+    <li><b>Corporate zone:</b> airport company staff, email, finance, HR, remote access.</li>
+    <li><b>Operational zone:</b> baggage, fuel, airfield lighting, building systems, ATC and radar. Safety-critical and built to be isolated.</li>
+  </ul>
+  <figure class="fig"><img src="assets/icon-plane.png" alt="Illustration of an aircraft" width="1000" height="667" loading="lazy"><figcaption>The aircraft is out of scope. This report is about the ground systems around it.</figcaption></figure>
+  <div class="note"><h4>A note on ATC</h4><p>Air traffic control is run by the national air navigation service provider, not by the airport company. That split is a security advantage when it is honoured in the network design, and a risk when shared infrastructure quietly erodes it.</p></div>
+</section>
+
+<section class="s" id="wifi">
+  <h2><span class="n">03</span>Public &amp; transit Wi-Fi</h2>
+  <p>Passengers meet airport Wi-Fi before they reach the terminal: on the bus from the city, at the stop, on the platform. Each is a separate network owned by a separate operator, and users cannot tell them apart. That is the opening an attacker uses.</p>
+  <figure class="fig"><img src="assets/icon-bus.png" alt="Illustration of a bus with a Wi-Fi symbol" width="1000" height="667" loading="lazy"></figure>
+  <div class="risk">
+    <div><small>Likelihood</small><b>Medium&ndash;High</b></div>
+    <div><small>Impact</small><b>Low&ndash;Medium</b></div>
+    <div><small>Primary control</small><b>Client isolation</b></div>
+  </div>
+  <div class="note pink"><h4>Documented: the evil twin</h4>
+    <p>In 2024 Australian Federal Police charged a man over "evil twin" Wi-Fi networks that mimicked legitimate hotspots at Perth, Melbourne and Adelaide airports and on domestic flights. Travellers who joined were sent to a fake login page that harvested email and social-media credentials. No hacking of the airport was needed, only a laptop and a convincing network name.</p>
+  </div>
+  <h3>Baseline controls</h3>
+  <ul class="tick">
+    <li>Client isolation on every public SSID, so passengers cannot see each other.</li>
+    <li>WPA3 or Enhanced Open where devices support it; a captive portal alone is not encryption.</li>
+    <li>Wireless intrusion detection that alerts on lookalike SSIDs and rogue access points in the terminal.</li>
+    <li>Passenger Wi-Fi terminates in its own zone, routed straight to the internet and nowhere else.</li>
+    <li>Clear signage of the one correct network name, and advice to treat every public network as untrusted.</li>
+  </ul>
+</section>
+
+<section class="s" id="vpn">
+  <h2><span class="n">04</span>VPN &amp; remote access</h2>
+  <p>A VPN is a tunnel, not a trust upgrade. For passengers it protects traffic on a hostile network. For airport workers and contractors it is the front door to the corporate network, and the front door is where attackers knock.</p>
+  <figure class="fig"><img src="assets/icon-vpn.png" alt="Illustration of two shields joined by an encrypted tunnel" width="1000" height="667" loading="lazy"></figure>
+  <div class="risk">
+    <div><small>Likelihood</small><b>Medium</b></div>
+    <div><small>Impact</small><b>Medium&ndash;High</b></div>
+    <div><small>Primary control</small><b>MFA + no split-tunnel</b></div>
+  </div>
+  <ul class="tick">
+    <li><b>MFA everywhere,</b> ideally phishing-resistant keys for administrators and anyone with operational access.</li>
+    <li><b>No split tunnelling</b> for staff devices: all traffic goes through the gateway so it can be inspected and logged.</li>
+    <li><b>Patch the gateway first.</b> Internet-facing VPN appliances are a favourite initial-access route, so they sit at the top of the patch queue.</li>
+    <li><b>Least privilege by role.</b> A VPN login should land in one small zone, not on the whole network.</li>
+    <li><b>Contractor access that expires.</b> Time-boxed accounts, reviewed monthly, removed on contract end.</li>
+  </ul>
+</section>
+
+<section class="s" id="nat">
+  <h2><span class="n">05</span>NAT &amp; perimeter hygiene</h2>
+  <p>Network address translation lets thousands of devices share a few public addresses. It is useful plumbing and a common source of false comfort: hiding addresses is not the same as blocking traffic. The real protection is the firewall rules that sit alongside it.</p>
+  <figure class="fig"><img src="assets/icon-nat.png" alt="Illustration of an internet cloud, a firewall, and four internal devices" width="1000" height="667" loading="lazy"></figure>
+  <div class="risk">
+    <div><small>Likelihood</small><b>Medium</b></div>
+    <div><small>Impact</small><b>Medium</b></div>
+    <div><small>Primary control</small><b>Config audits</b></div>
+  </div>
+  <div class="note pink"><h4>Documented: GhostDNS</h4>
+    <p>In 2018 researchers described GhostDNS, a campaign that changed the DNS settings on more than 100,000 home and small-office routers, mostly in Brazil, by exploiting weak admin passwords and known flaws. Victims typing their bank's real address were quietly sent to a copy. The lesson for an airport: edge devices, including those at remote offices and bus-stop kiosks, are part of the perimeter, and default credentials are a vulnerability.</p>
+  </div>
+  <ul class="tick">
+    <li>Inventory every edge device, router and gateway, including those run by contractors and transit partners.</li>
+    <li>Change defaults, disable remote admin from the internet, and lock DNS to resolvers you control.</li>
+    <li>Review NAT and port-forward rules quarterly; delete every rule nobody can justify.</li>
+    <li>Log translations, so an incident can be traced from a public address back to the internal device.</li>
+  </ul>
+</section>
+
+<section class="s" id="seg">
+  <h2><span class="n">06</span>Network segmentation</h2>
+  <p>Segmentation is the main control in this report. Everything else reduces the chance of a compromise. Segmentation decides how far a compromise can go.</p>
+  <figure class="fig"><img src="assets/icon-segmentation.png" alt="Passenger zone and operational zone separated, with the path between them blocked" width="1000" height="667" loading="lazy"></figure>
+  <div class="risk">
+    <div><small>Likelihood</small><b>Low</b></div>
+    <div><small>Impact</small><b>Severe</b></div>
+    <div><small>Primary control</small><b>Physical / logical air-gap</b></div>
+  </div>
+  <ul class="tick">
+    <li>Passenger, corporate and operational networks are separate security zones with default-deny between them.</li>
+    <li>Where data must cross, it crosses a single, monitored, one-way or tightly proxied point, not a shared switch.</li>
+    <li>Operational systems do not use the corporate directory or the corporate remote-access service.</li>
+    <li>Radar and ATC infrastructure stay physically and logically separate from anything the airport company runs for passengers.</li>
+    <li>Test the separation. Run scans from the passenger side and confirm that nothing operational answers.</li>
+  </ul>
+  <div class="note"><h4>Documented: Boryspil, 2016</h4>
+    <p>Ukrainian authorities reported malware inside the network of Kyiv's Boryspil airport in January 2016, in a segment that included air traffic control systems. It was an early, public example of why the line between general airport IT and ATC has to be hard rather than assumed.</p>
+  </div>
+</section>
+
+<section class="s" id="gov">
+  <h2><span class="n">07</span>Regulatory &amp; governance</h2>
+  <p>Several regimes touch the same networks, and none of them replaces the others. Together they set the baseline.</p>
+  <div class="grid2">
+    <div class="card"><h3>EASA</h3><p>Aviation information-security rules for organisations in the European aviation system, including risk management and incident reporting.</p></div>
+    <div class="card"><h3>NIS2</h3><p>EU directive covering essential entities, which includes air transport. Sets security measures, management accountability and reporting deadlines.</p></div>
+    <div class="card"><h3>ICAO</h3><p>International guidance on aviation cyber security, built into national programmes and the Chicago Convention annexes.</p></div>
+    <div class="card"><h3>Data protection</h3><p>GDPR governs passenger and worker data: lawful basis, minimisation, breach notification within 72 hours.</p></div>
+  </div>
+  <h3>Who owns what</h3>
+  <div class="tw"><table>
+    <tr><th>Role</th><th>Owns</th></tr>
+    <tr><td>Board / accountable manager</td><td>Risk appetite, budget, personal accountability under NIS2</td></tr>
+    <tr><td>CISO / security lead</td><td>Policy, architecture standards, incident coordination</td></tr>
+    <tr><td>Network and IT operations</td><td>Segmentation, patching, logging, remote access</td></tr>
+    <tr><td>Operational technology owners</td><td>Safety-critical systems, change control, vendor access</td></tr>
+    <tr><td>Data protection officer</td><td>Passenger and staff data, breach assessment</td></tr>
+    <tr><td>Air navigation service provider</td><td>ATC networks and their own security obligations</td></tr>
+  </table></div>
+  <div class="note"><h4>Overlap, not redundancy</h4><p>Where regimes overlap, treat it as a cross-check rather than duplicated work. One well-evidenced control, such as the tested separation of ATC from passenger traffic, can answer several audits at once.</p></div>
+</section>
+
+<section class="s" id="sov">
+  <h2><span class="n">08</span>Platform &amp; data sovereignty</h2>
+  <h3>Reducing platform monoculture</h3>
+  <p>When every device runs the same operating system and every service lives with the same cloud provider, one flaw, one outage or one legal demand reaches everything at once. For an airport, diversity is a resilience measure, not a fashion choice.</p>
+  <ul class="tick">
+    <li>Plan an exit from a single desktop OS monoculture: Linux and managed thin clients for kiosks, check-in and back-office roles where they fit.</li>
+    <li>Prefer EU-hosted, EU-governed infrastructure for sensitive workloads, with contractual and technical control over keys.</li>
+    <li>Keep an offline fallback for critical operations. A system that cannot run without a foreign cloud is a dependency, not an asset.</li>
+    <li>Treat vendor consolidation as a risk to be argued for, not a saving to be assumed.</li>
+  </ul>
+  <h3>Where passenger data actually sits</h3>
+  <p>Names, passport numbers, itineraries and contact details pass through airlines, handlers, booking platforms, retail partners and analytics vendors. Each copy is another place to be breached, subpoenaed or sold. The airport rarely needs most of it.</p>
+  <div class="call">The safest passenger record isn't the one guarded best. It's the one that was never centralised in the first place.</div>
+  <div class="note peach"><h4>Need to know, not a data bank</h4>
+    <p>Passenger names and details should flow to the people and systems that need them for a flight, for as long as that flight needs them, and then go. A large standing store of passenger data is a prize for anyone who wants to pillage it: criminals, insiders and states. Design so the store does not exist.</p>
+  </div>
+  <h3>Five baseline moves</h3>
+  <ul class="tick">
+    <li><b>Collect less.</b> If an airport process does not need the passenger name, do not hold it.</li>
+    <li><b>Keep it short.</b> Fixed, short retention with automatic deletion, and proof that it happens.</li>
+    <li><b>Keep it local.</b> Sensitive data on infrastructure under European jurisdiction, with keys held by the airport.</li>
+    <li><b>Split it.</b> Separate identity data from operational data, so one breach does not join them up.</li>
+    <li><b>Log access.</b> Every lookup of a passenger record is attributable to a named person and a reason.</li>
+  </ul>
+</section>
+
+<section class="s" id="threat">
+  <h2><span class="n">09</span>Threat landscape</h2>
+  <p>It is tempting to picture airport hacking as a criminal gang after a ransom. That happens, but the threats that matter most to aviation are state-linked: actors with patience, budgets and strategic reasons to disrupt or to watch.</p>
+  <figure class="fig"><img src="assets/icon-radar.png" alt="Illustration of a radar screen with a sweep" width="1000" height="667" loading="lazy"></figure>
+  <h3>Documented: state-linked activity</h3>
+  <div class="note pink"><h4>August 2024: GPS spoofing</h4>
+    <p>The Wall Street Journal reported that a United Airlines flight over the Middle East experienced GPS spoofing, with the aircraft receiving false position data. Spoofing and jamming of satellite navigation is now widespread around conflict zones; EASA has reported thousands of such events across Europe in 2024, on the order of 6,000. Aircraft carry backup navigation, but crews are being asked to rely on it more often.</p>
+  </div>
+  <div class="note pink"><h4>June 2017: NotPetya</h4>
+    <p>NotPetya began as a poisoned update to Ukrainian accounting software and spread worldwide, wiping systems at shipping, pharmaceutical and logistics firms. The US and UK governments attributed it to Russian military intelligence. Boryspil airport in Kyiv was among those hit, with staff reverting to whiteboards. It was not aimed at airports, which is the point: state-grade malware does not respect sector boundaries.</p>
+  </div>
+  <h3>For contrast: criminal, not state</h3>
+  <div class="note"><h4>September 2018: Bristol Airport</h4>
+    <p>Bristol Airport's flight information screens were taken offline by a ransomware attack over a weekend. Staff fell back to whiteboards and paper while systems were rebuilt. Flights continued, but the disruption showed how a business-system attack reaches passengers.</p>
+  </div>
+  <p class="sm">Everything above is public reporting about other organisations. None of it is a claim about Athens International Airport.</p>
+</section>
+
+<section class="s" id="social">
+  <h2><span class="n">10</span>Physical &amp; social engineering risk</h2>
+  <p>A badge, a hi-vis jacket and a confident walk get people into places. Airports have thousands of workers, many contractors and constant turnover, which is the ideal environment for pretexting.</p>
+  <ul class="tick">
+    <li><b>Tailgating:</b> staff doors held open for someone carrying coffee. Make challenging a stranger normal and consequence-free.</li>
+    <li><b>Pretexting:</b> a "helpdesk" call asking for a password reset, or a "vendor" asking for a one-off remote session. Verify through a number you already hold.</li>
+    <li><b>Unattended ports:</b> network sockets and USB points in public areas. Disable what is not needed and keep the rest in the public zone.</li>
+    <li><b>Dropped devices:</b> found USB sticks go to security, not into a laptop.</li>
+    <li><b>Short, regular training</b> that uses real examples beats a yearly slide deck.</li>
+  </ul>
+</section>
+
+<section class="s" id="ir">
+  <h2><span class="n">11</span>Incident response &amp; business continuity</h2>
+  <p>Detection and recovery decide how bad an incident becomes. Both need to be practised before they are needed, including the manual fallbacks seen in the real incidents in the <a href="#threat">threat landscape</a>.</p>
+  <div class="tw"><table>
+    <tr><th>Phase</th><th>What it means here</th></tr>
+    <tr><td><b>Detect</b></td><td>Central logging, alerts on zone-boundary traffic, rogue Wi-Fi detection, a clear reporting route for staff.</td></tr>
+    <tr><td><b>Contain</b></td><td>Pre-agreed authority to cut a zone off. Passenger Wi-Fi can be sacrificed; operational systems must be protected first.</td></tr>
+    <tr><td><b>Eradicate</b></td><td>Remove the foothold, reset credentials and keys, patch the entry route. Do not rebuild onto a still-compromised network.</td></tr>
+    <tr><td><b>Recover</b></td><td>Restore from offline backups, in priority order: safety, operations, passenger services, commercial.</td></tr>
+    <tr><td><b>Review</b></td><td>Blameless review, evidence for regulators, and changes to controls and exercises.</td></tr>
+  </table></div>
+  <div class="note peach"><h4>Plan for the manual day</h4><p>Whiteboards at Bristol and Boryspil kept flights moving. Keep printed procedures, offline contact lists and rehearsed manual operations for the systems passengers see.</p></div>
+</section>
+
+<section class="s" id="recs">
+  <h2><span class="n">12</span>Recommendations summary</h2>
+  <div class="grid2">
+    <div class="card"><h3>Network &amp; access</h3>
+      <ul class="tick"><li>Default-deny between passenger, corporate and operational zones.</li><li>Client isolation and rogue-AP detection on public Wi-Fi.</li><li>Audit NAT, firewall and edge devices quarterly.</li></ul></div>
+    <div class="card"><h3>Identity &amp; people</h3>
+      <ul class="tick"><li>Phishing-resistant MFA for admin and operational access.</li><li>Time-boxed contractor accounts.</li><li>Short, frequent social-engineering training.</li></ul></div>
+    <div class="card"><h3>Governance</h3>
+      <ul class="tick"><li>One owner for each zone and each regime.</li><li>Evidence of tested ATC separation, reusable across audits.</li><li>Data minimisation and retention as a board-level policy.</li></ul></div>
+    <div class="card"><h3>Resilience</h3>
+      <ul class="tick"><li>Offline backups and tested restores.</li><li>Manual fallbacks for passenger-facing systems.</li><li>Platform diversity and a plan to exit single-vendor dependence.</li></ul></div>
+  </div>
+  <div class="call">None of this is exotic. It's the unglamorous work of knowing what is connected to what, and saying no to the connections that shouldn't exist.</div>
+</section>
+
+<section class="s" id="matrix">
+  <h2><span class="n">13</span>Risk overview matrix</h2>
+  <div class="tw"><table>
+    <tr><th>Risk</th><th>Likelihood</th><th>Impact</th><th>Key control</th></tr>
+    <tr><td>Evil-twin / rogue Wi-Fi</td><td><span class="pill p-high">Medium&ndash;High</span></td><td><span class="pill p-low">Low&ndash;Medium</span></td><td>Client isolation, WIDS</td></tr>
+    <tr><td>VPN / remote-access compromise</td><td><span class="pill p-med">Medium</span></td><td><span class="pill p-high">Medium&ndash;High</span></td><td>MFA, patching, no split-tunnel</td></tr>
+    <tr><td>Edge router / DNS hijack</td><td><span class="pill p-med">Medium</span></td><td><span class="pill p-med">Medium</span></td><td>Config audits, locked DNS</td></tr>
+    <tr><td>Passenger-to-ATC lateral movement</td><td><span class="pill p-low">Low</span></td><td><span class="pill p-sev">Severe</span></td><td>Segmentation, air-gap</td></tr>
+    <tr><td>State-linked intrusion or disruptive malware</td><td><span class="pill p-med">Medium</span></td><td><span class="pill p-sev">Severe</span></td><td>Segmentation, offline recovery, monitoring</td></tr>
+    <tr><td>Passenger data breach or over-collection</td><td><span class="pill p-high">Medium&ndash;High</span></td><td><span class="pill p-high">High</span></td><td>Minimisation, short retention, local keys</td></tr>
+    <tr><td>Social engineering / physical access</td><td><span class="pill p-high">Medium&ndash;High</span></td><td><span class="pill p-med">Medium</span></td><td>Training, access control</td></tr>
+  </table></div>
+  <p class="sm">Ratings are qualitative and illustrative, not the result of an assessment.</p>
+</section>
+
+<section class="s" id="gloss">
+  <h2><span class="n">14</span>Glossary</h2>
+  <dl class="gl">
+    <dt>NAT</dt><dd>Network address translation. Lets many private devices share public addresses. Not a firewall.</dd>
+    <dt>VPN</dt><dd>Virtual private network. An encrypted tunnel between a device and a network.</dd>
+    <dt>Split tunnelling</dt><dd>Sending some traffic through the VPN and the rest straight to the internet, which bypasses inspection.</dd>
+    <dt>Client isolation</dt><dd>A Wi-Fi setting that stops connected devices from talking to each other.</dd>
+    <dt>Segmentation</dt><dd>Dividing a network into zones with controlled, minimal paths between them.</dd>
+    <dt>OT</dt><dd>Operational technology: systems that control physical processes, like baggage, lighting and radar.</dd>
+    <dt>MFA</dt><dd>Multi-factor authentication. A second proof of identity beyond a password.</dd>
+    <dt>Pretexting</dt><dd>Inventing a believable scenario to get someone to hand over access or information.</dd>
+  </dl>
+</section>
+
+<section class="s" id="doc">
+  <h2><span class="n">15</span>Document control</h2>
+  <div class="tw"><table>
+    <tr><th>Item</th><th>Detail</th></tr>
+    <tr><td>Title</td><td>Airport Cyber Security Report: Illustrative Edition</td></tr>
+    <tr><td>Classification</td><td>Illustrative / Training Reference. Not an Operational Audit</td></tr>
+    <tr><td>Version</td><td>ATH Ground Systems, 10 September 2026</td></tr>
+    <tr><td>Prepared for</td><td>Internal briefing / portfolio use</td></tr>
+    <tr><td>Format</td><td>Web edition of the 17-page PDF. <a href="ATH-Cyber-Security-Report.pdf">Download the PDF</a></td></tr>
+  </table></div>
+  <p class="sm">This document is for illustration and training. It is not an audit of, and makes no claim about, Athens International Airport or any other organisation. Documented incidents are drawn from public reporting and relate to the organisations named.</p>
+  <span class="stamp">ILLUSTRATIVE COPY</span>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><b>Airport Cyber Security Report: Illustrative Edition</b></p>
+    <p>Published by Niall O'Hara, <a href="https://eriu.tech">Eriu Technology</a>. This page is not indexed by search engines.</p>
+  </div>
+</footer>
+
+</body>
+</html>
